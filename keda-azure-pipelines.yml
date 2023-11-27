@@ -1,0 +1,35 @@
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: pipeline-trigger-auth
+  namespace: default
+spec:
+  secretTargetRef:
+    - parameter: personalAccessToken
+      name: pipeline-auth
+      key: personalAccessToken
+
+---
+
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: azure-pipelines-scaledobject
+  namespace: default
+spec:
+  scaleTargetRef:
+    # apiVersion: apps/v1 # Default
+    # kind: Deployment # Default
+    name: azdevops-deployment
+  cooldownPeriod: 180 # Default 300 # The cooldownPeriod field represents the cool-down period for which KEDA should not query for new events after scaling in.
+  minReplicaCount: 2 # Default 0
+  maxReplicaCount: 10 # Default 100
+  triggers:
+  - type: azure-pipelines
+    metadata:
+      poolName: "k8sAgentsPool"
+      organizationURLFromEnv: "https://dev.azure.com/rafaelribeiroAG"
+      #targetPipelinesQueueLength: "1" # Default 1
+      #activationTargetPipelinesQueueLength: "5" # Default 0
+    authenticationRef:
+     name: pipeline-trigger-auth

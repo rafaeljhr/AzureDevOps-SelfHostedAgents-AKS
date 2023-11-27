@@ -1,18 +1,21 @@
-FROM microsoft/vsts-agent
+FROM ubuntu:22.04
 
-ENV DOCKER_VERSION="18.03.1-ce"
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y curl git jq libicu70
 
-# add docker CLI
-RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz | \
-    tar zxvf - --strip 1 -C /usr/bin docker/docker
+# Also can be "linux-arm", "linux-arm64".
+ENV TARGETARCH="linux-x64"
 
-WORKDIR /data
-COPY ./start.sh .
-RUN chmod +x start.sh
+WORKDIR /azp/
 
+COPY ./start.sh ./
+RUN chmod +x ./start.sh
 
-WORKDIR /azp
-COPY ./start.sh .
-RUN chmod +x start.sh
+RUN useradd agent
+RUN chown agent ./
+# USER agent
+# Another option is to run the agent as root.
+ENV AGENT_ALLOW_RUNASROOT="true"
 
-CMD ["./start.sh"]
+ENTRYPOINT ./start.sh
