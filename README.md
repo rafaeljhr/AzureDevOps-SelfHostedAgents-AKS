@@ -1,5 +1,5 @@
-kb apply -f secrets.yml
-kb apply -f agents.yml
-kb apply -f keda-manifests.yml
-kb apply -f keda-azure-pipelines.yml
+- kubectl apply -f secrets.yml
+- kubectl apply -f agents.yml
+- kubectl apply -f keda-manifests.yml
+- kubectl apply -f keda-azure-pipelines.yml
 
