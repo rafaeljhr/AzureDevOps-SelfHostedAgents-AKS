@@ -1,19 +1,17 @@
-<<<<<<< HEAD
-# Reveal secrets
+# Reveal git secrets
+- gpg --import public.key
+- git secret tell -m <user@example.com> # email from previous imported key
+- git secret reveal  # pre-existent public key needed
+- git secret hide # symmetric key used to encrypt files will now also be encrypted with the new public key
 
-=======
-- kubectl apply -f secrets.yml
-- kubectl apply -f agents.yml
-- kubectl apply -f keda-manifests.yml
-- kubectl apply -f keda-azure-pipelines.yml
->>>>>>> e1ffd9e32450ab87b4370de6c7625fba1e8b420d
+# Build and push azure pipelines agent Docker image
+- docker login -u 'USERNAME' -p 'PASSWORD' acragentspool.azurecr.io
+- docker build --tag "acragentspool.azurecr.io/azure-devops-agent:latest"
+- docker push acragentspool.azurecr.io/azure-devops-agent:latest
 
-# Build and push Docker image
-
-
-
-# Apply manifests
-- kubectl apply -f secrets.yml
+# Apply manifests in cluster
+- kubectl apply -f ./secrets/azure-devops-token.yml
+- kubectl apply -f ./secrets/registry-login.yml
 - kubectl apply -f agents.yml
 - kubectl apply -f keda-manifests.yml
 - kubectl apply -f keda-azure-pipelines.yml
