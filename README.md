@@ -1,3 +1,13 @@
-# Self-hosted Azure DevOps Agents on Azure Kubernetes Cluster 
+# Reveal secrets
 
+
+# Build and push Docker image
+
+
+
+# Apply manifests
+- kubectl apply -f secrets.yml
+- kubectl apply -f agents.yml
+- kubectl apply -f keda-manifests.yml
+- kubectl apply -f keda-azure-pipelines.yml
 
