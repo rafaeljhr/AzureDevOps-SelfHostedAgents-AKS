@@ -1,2 +1,2 @@
-azure-devops-token.yml
-registry-login.yml
+./secrets/azure-devops-token.yml
+./secrets/registry-login.yml
